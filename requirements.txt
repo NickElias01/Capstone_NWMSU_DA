@@ -9,8 +9,11 @@ loguru
 # Environment variables management
 python-dotenv
 
+# For handling binary Excel files (.xlsb).
+pyxlsb
+
 # Kafka Message Broker Integration
-kafka-python-ng
+#kafka-python-ng
 
 # SQLite Database Management (SQLite is built into Python, but if you prefer a library to handle it easily)
 # sqlite3  # This is typically included with Python, but some prefer to use SQLAlchemy for easier ORM management
@@ -19,14 +22,14 @@ kafka-python-ng
 pandas
 
 # Data Visualization
-matplotlib
-numpy
+#matplotlib
+#numpy
 
 # For better handling of JSON messages
-simplejson
+#simplejson
 
-kafka-python
+#kafka-python
 
-colorama
+#colorama
 
-requests==2.31.0  # For API calls
+#requests==2.31.0  # For API calls
