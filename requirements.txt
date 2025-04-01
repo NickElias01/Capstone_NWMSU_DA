@@ -21,8 +21,11 @@ pyxlsb
 # Data Processing
 pandas
 
+# For statistical data visualization
+seaborn
+
 # Data Visualization
-#matplotlib
+matplotlib
 #numpy
 
 # For better handling of JSON messages
@@ -33,3 +36,5 @@ pandas
 #colorama
 
 #requests==2.31.0  # For API calls
+
+ipykernel
