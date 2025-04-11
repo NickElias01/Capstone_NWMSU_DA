@@ -38,3 +38,5 @@ matplotlib
 #requests==2.31.0  # For API calls
 
 ipykernel
+
+scikit-learn
