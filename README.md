@@ -1,10 +1,10 @@
-# Energy Consumption Analysis and Modeling
+# Colorado Energy Consumption Analysis and Modeling
 
 ![A snowy outdoor scene with a solar panel farm and wind turbine](images/pexels-pixabay-433308.jpg)
 
 ## Table of Contents
 
-- [Energy Consumption Analysis and Modeling](#energy-consumption-analysis-and-modeling)
+- [Colorado Energy Consumption Analysis and Modeling](#colorado-energy-consumption-analysis-and-modeling)
   - [Table of Contents](#table-of-contents)
   - [💡 About the Author](#-about-the-author)
   - [📊 Project Overview](#-project-overview)
