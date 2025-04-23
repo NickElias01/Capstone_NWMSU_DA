@@ -1,215 +1,136 @@
-# Colorado Regional Energy Monitoring Suite by Elias Analytics
+# Energy Consumption Analysis and Modeling
 
-Real-time energy monitoring system that tracks and visualizes power usage and temperature data across multiple regions in Colorado.
-
+![A snowy outdoor scene with a solar panel farm and wind turbine](images/pexels-pixabay-433308.jpg)
 
 ## Table of Contents
-- [Features](#features)
-- [API Integration](#api-integration)
-- [Component Details](#component-details)
-- [Prerequisites](#prerequisites)
-- [Quick Start with Docker](#quick-start-with-docker-recommended)
-- [Manual Installation](#manual-installation)
-- [Project Structure](#project-structure)
-- [Monitoring and Logs](#monitoring-and-logs)
-- [Configuration](#configuration)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
-- [Support](#support)
+
+- [Energy Consumption Analysis and Modeling](#energy-consumption-analysis-and-modeling)
+  - [Table of Contents](#table-of-contents)
+  - [💡 About the Author](#-about-the-author)
+  - [📊 Project Overview](#-project-overview)
+  - [⚙️ Features](#️-features)
+  - [📈 Results and Interpretation](#-results-and-interpretation)
+    - [🔍 Regression Models](#-regression-models)
+    - [📉 Linear Regression](#-linear-regression)
+    - [🌲 Random Forest Regressor](#-random-forest-regressor)
+    - [🧩 Clustering (K-Means)](#-clustering-k-means)
+  - [🚀 Getting Started](#-getting-started)
+    - [🧰 Prerequisites](#-prerequisites)
+    - [🛠 Installation](#-installation)
+  - [🧭 Next Steps](#-next-steps)
+    - [For Regression Models:](#for-regression-models)
+    - [For K-Means Clustering:](#for-k-means-clustering)
+  - [📄 License](#-license)
+  - [💬 Support](#-support)
 
 
 
-## Features
+## 💡 About the Author
+Hello! I'm Nick Elias M.S., a professional Data Analyst from Denver, CO with expertise in Python, SQL, visualization, and machine learning. I specialize in uncovering actionable insights from complex datasets. Please feel free to connect with me on LinkedIn:
 
-- 📊 Real-time power usage visualization
-- 🌡️ Temperature monitoring across regions
-- ⚡ Renewable energy percentage tracking
-- ⚠️ Automated alert system for threshold violations
-- 💾 Data persistence with SQLite
-- 📝 Comprehensive logging system
+- **LinkedIn:** https://www.linkedin.com/in/nick-elias-84b08174/
+- **GitHub:** https://github.com/NickElias01/Capstone_NWMSU_DA 
 
-## API Integration
+## 📊 Project Overview
+This project focuses on analyzing energy consumption data at the city and county levels, building predictive models, and clustering energy profiles to uncover insights. The analysis includes statistical summaries, energy consumption trends, and machine learning models for regression and clustering.
 
-The system uses the Open-Meteo API to fetch real-time temperature data for each monitored region:
+The project leverages Python and popular data science libraries to:
+- Perform statistical analysis of energy consumption data.
+- Visualize energy consumption trends by sector and climate zone.
+- Build and evaluate regression models (Linear Regression and Random Forest) to predict industrial electricity consumption.
+- Apply K-Means clustering to group cities based on energy consumption patterns.
 
-- **API Provider**: [Open-Meteo](https://open-meteo.com/)
-- **Endpoint**: Current Weather Data
-- **Data Points**: Temperature in Celsius
-- **Regions**: Denver, Boulder, Aurora, Lakewood, Golden
+## ⚙️ Features
 
-### Features
-- Real-time temperature data fetching
-- Automatic fallback to synthetic data if API fails
-- Rate-limit compliant
-- Error handling with logging
+- **Statistical Analysis**: Summarizes key metrics and identifies missing data.
+- **Energy Consumption Trends**: Visualizes total and average energy consumption by sector and climate zone.
+- **Regression Models**: Predicts industrial electricity consumption using features like population and residential/commercial energy usage.
+- **Clustering**: Groups cities into clusters based on energy consumption patterns, with evaluation using the Silhouette Score.
 
-### Testing API Connection
 
-To verify API connectivity:
-```bash
-python -m tests.test_weather_api
-```
+## 📈 Results and Interpretation
 
-Expected output:
-```
-Testing Open-Meteo API connection for all regions...
---------------------------------------------------
-✅ Denver: 23.5°C
-✅ Boulder: 22.1°C
-✅ Aurora: 23.8°C
-✅ Lakewood: 22.9°C
-✅ Golden: 21.7°C
---------------------------------------------------
-```
+### 🔍 Regression Models
 
-## Component Details
+### 📉 Linear Regression
+- **Mean Absolute Error (MAE):** 17,274.51  
+  This means that, on average, the model's predictions for industrial electricity consumption are off by 17,274.51 MWh.
+- **Mean Squared Error (MSE):** 3,238,976,130.99  
+  A large value indicating significant errors in predictions.
+- **R² (Coefficient of Determination):** -1.17  
+  A negative R² suggests that the model performs worse than simply predicting the average value of the target variable. This indicates that Linear Regression is not capturing the relationship between the input features and the target variable effectively.
 
-### Consumer Script
-The consumer script (`consumers/energy_data_consumer.py`) is responsible for:
+**Interpretation:**  
+The Linear Regression model is not suitable for this dataset. It struggles to explain the variance in industrial electricity consumption.
 
-#### Data Processing
-- Receives real-time energy metrics from Kafka
-- Processes messages containing power usage and temperature data
-- Handles data for multiple Colorado regions concurrently
+### 🌲 Random Forest Regressor
+- **Mean Absolute Error (MAE):** 12,797.84  
+  The predictions are closer to the actual values compared to Linear Regression.
+- **Mean Squared Error (MSE):** 1,627,876,745.22  
+  A significantly lower value than Linear Regression, indicating better performance.
+- **R² (Coefficient of Determination):** -0.09  
+  Still negative but much closer to 0, suggesting that Random Forest performs slightly better than Linear Regression but still struggles to explain the data.
 
-#### Visualization
-- Creates dynamic line plots showing power usage trends
-- Displays real-time bar charts of temperature readings
-- Updates visualization every second
-- Color-codes different regions for easy identification
+**Interpretation:**  
+Random Forest performs better than Linear Regression but still requires improvement. Techniques like hyperparameter tuning or feature engineering could enhance its performance.
 
-#### Alert System
-- Monitors for threshold violations:
-  - High/Low power usage (>5000kW or <500kW)
-  - Extreme temperatures (>50°C or <0°C)
-  - Low renewable energy percentage (<5%)
-- Generates immediate alerts for any violations
-- Logs alerts to separate alert log files
+---
 
-#### Data Storage
-- Persists all readings to SQLite database
-- Maintains historical data for trend analysis
-- Ensures data integrity with thread-safe operations
+### 🧩 Clustering (K-Means)
 
-## Prerequisites
+- **Silhouette Score:** 0.6187  
+  This score measures how well the data points fit within their assigned clusters. A score closer to 1 indicates well-formed and distinct clusters, while values above 0.5 are generally considered good.
 
-- Windows, macOS, or Linux
-- Python 3.9 or higher
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (for quick start method)
-- [Apache Kafka & Zookeeper](https://kafka.apache.org/quickstart) (for manual installation method)
+**Interpretation:**  
+The K-Means clustering model successfully grouped cities into distinct clusters based on their energy consumption patterns. This can help identify cities with similar energy profiles for targeted interventions or policy-making.
 
-## Quick Start with Docker (Optional, if not using Docker skip to [Manual Installation](#manual-installation))
+---
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/NickElias01/streamingdata-project-06-nickelias.git
-   cd streamingdata-project-06-nickelias
+
+## 🚀 Getting Started
+
+### 🧰 Prerequisites
+
+Ensure you have the following installed:
+- Python 3.8 or higher
+- `pip` for managing Python packages
+
+### 🛠 Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/NickElias01/Capstone_NWMSU_DA.git
+   cd energy-analysis
    ```
-
-2. **Create `.env` file:**
-   ```bash
-   copy .env.template .env
-   ```
-
-3. **Build and run with Docker Compose:**
-   ```bash
-   docker-compose up --build
-   ```
-
-This will start all services: Kafka, Zookeeper, Producer, and Consumer.
-
-## Manual Installation
-
-1. **Set up Python environment:**
-   ```bash
-   python -m venv .venv
-   .\.venv\Scripts\activate  # Windows
-   source .venv/bin/activate # Linux/macOS
-   ```
-
-2. **Install dependencies:**
-   ```bash
+2. Install the required Python packages:
+   ```sh
    pip install -r requirements.txt
    ```
-
-3. **Create `.env` file:**
-   ```bash
-   copy .env.template .env
+3. Set up the environment variables
+   - Copy .env.example to .env:
+   ```sh
+    cp .env.example .env
    ```
+   - Update PROJECT_ROOT= "Project location" to your file path
+     - ex: PROJECT_ROOT = C:\Documents\Capstone_NWMSU_DA
 
-4. **Start Kafka and Zookeeper:**
-   - Download and extract [Kafka](https://kafka.apache.org/downloads)
-   - Start Zookeeper (Terminal 1):
-     ```bash
-     cd ~/kafka
-     bin/zookeeper-server-start.sh config/zookeeper.properties
-     ```
-   - Start Kafka (Terminal 2):
-     ```bash
-     cd ~/kafka
-     bin/kafka-server-start.sh config/server.properties
-     ```
 
-5. **Run the Producer (Terminal 3):**
-   ```bash
-   python -m producers.energy_data_producer
-   ```
+## 🧭 Next Steps
 
-6. **Run the Consumer (Terminal 4):**
-   ```bash
-   python -m consumers.energy_data_consumer
-   ```
+### For Regression Models:
+- Investigate feature importance (e.g., using `feature_importances_` for Random Forest) to identify which features contribute most to the predictions.
+- Perform feature engineering (e.g., create new features, remove irrelevant ones).
+- Tune hyperparameters for Random Forest (e.g., number of trees, max depth) using `GridSearchCV` or `RandomizedSearchCV`.
+- Consider trying other regression models like Gradient Boosting or XGBoost.
 
-## Project Structure
+### For K-Means Clustering:
+- Visualize the clusters to understand their characteristics.
+- If the dataset has many features, consider dimensionality reduction (e.g., PCA) to improve clustering interpretability.
 
-```
-streamingdata-project-06-nickelias/
-├── consumers/              # Consumer components
-├── producers/              # Producer components
-├── utils/                 # Utility modules
-├── logs/                  # Application logs
-│   ├── normal/           # Regular operation logs
-│   ├── alerts/           # Warning and threshold alerts
-│   └── errors/           # Error and critical logs
-├── data/                 # SQLite database
-├── docker-compose.yml    # Docker configuration
-├── requirements.txt      # Python dependencies
-└── README.md            # This file
-```
-
-## Monitoring and Logs
-
-- **Normal operations:** `logs/normal/normal_YYYYMMDD.log`
-- **Alert conditions:** `logs/alerts/alerts_YYYYMMDD.log`
-- **Error logs:** `logs/errors/errors_YYYYMMDD.log`
-
-## Configuration
-
-Key settings in `.env`:
-```ini
-KAFKA_TOPIC=energy_data
-KAFKA_BROKER=kafka:9092
-MESSAGE_INTERVAL_SECONDS=5
-```
-
-## Troubleshooting
-
-1. **No visualization?**
-   - Ensure X11 forwarding is enabled
-   - Check matplotlib backend settings
-
-2. **Connection refused?**
-   - Verify Kafka and Zookeeper are running
-   - Check broker address in `.env`
-
-3. **No data flowing?**
-   - Confirm producer is running
-   - Check Kafka topic exists
-
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 💬 Support
 
 For issues and questions, please open a GitHub issue.
